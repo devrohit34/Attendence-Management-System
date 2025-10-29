@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-form">
+                <h2><i class="fas fa-user-clock"></i> Attendance System</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user"></i> Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+                <div class="demo-credentials">
+                    <p><strong>Demo Credentials:</strong></p>
+                    <p>Username: admin | Password: admin123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="page">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-user-clock"></i> Attendance System</h3>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="menu-item active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="#" class="menu-item" data-page="attendance"><i class="fas fa-check-circle"></i> Mark Attendance</a></li>
+                <li><a href="#" class="menu-item" data-page="users"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="#" class="menu-item" data-page="reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                <li><a href="#" class="menu-item" data-page="leave"><i class="fas fa-calendar-alt"></i> Leave Management</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="user-info">
+                    <span id="currentUser">Welcome, Admin</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="page-content active">
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon present">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="presentCount">0</h3>
+                            <p>Present Today</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon total">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalUsers">0</h3>
+                            <p>Total Users</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon leave">
+                            <i class="fas fa-calendar-times"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingLeaves">0</h3>
+                            <p>Pending Leaves</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon report">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="attendanceRate">0%</h3>
+                            <p>Attendance Rate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list" id="recentActivity">
+                        <!-- Activities will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mark Attendance Page -->
+            <div id="attendancePage" class="page-content">
+                <div class="attendance-form">
+                    <h3>Mark Attendance</h3>
+                    <form id="attendanceForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="attendanceUser">Select User</label>
+                                <select id="attendanceUser" required>
+                                    <option value="">Select User</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="attendanceDate">Date</label>
+                                <input type="date" id="attendanceDate" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="attendanceStatus">Status</label>
+                                <select id="attendanceStatus" required>
+                                    <option value="Present">Present</option>
+                                    <option value="Absent">Absent</option>
+                                    <option value="Late">Late</option>
+                                    <option value="Leave">Leave</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkInTime">Check-in Time</label>
+                                <input type="time" id="checkInTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="remarks">Remarks</label>
+                            <textarea id="remarks" rows="3" placeholder="Enter remarks..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Mark Attendance
+                        </button>
+                    </form>
+                </div>
+
+                <div class="today-attendance">
+                    <h3>Today's Attendance</h3>
+                    <div class="table-container">
+                        <table id="todayAttendanceTable">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Status</th>
+                                    <th>Check-in</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Today's attendance will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Management Page -->
+            <div id="usersPage" class="page-content">
+                <div class="page-header">
+                    <h3>User Management</h3>
+                    <button class="btn-primary" id="addUserBtn">
+                        <i class="fas fa-plus"></i> Add New User
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Join Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div id="reportsPage" class="page-content">
+                <div class="reports-controls">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reportUser">Select User</label>
+                            <select id="reportUser">
+                                <option value="all">All Users</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportMonth">Month</label>
+                            <select id="reportMonth">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportYear">Year</label>
+                            <select id="reportYear">
+                                <!-- Years will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <button class="btn-primary" id="generateReportBtn">
+                            <i class="fas fa-chart-bar"></i> Generate Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="report-summary">
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <h4>Total Present</h4>
+                            <span id="totalPresent">0</span>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Total Absent</h4>
+                            <span id="totalAbsent">0</span>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Total Late</h4>
+                            <span id="totalLate">0</span>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Attendance %</h4>
+                            <span id="attendancePercent">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="reportsTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Status</th>
+                                <th>Check-in</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Report data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Leave Management Page -->
+            <div id="leavePage" class="page-content">
+                <div class="page-header">
+                    <h3>Leave Management</h3>
+                    <button class="btn-primary" id="applyLeaveBtn">
+                        <i class="fas fa-plus"></i> Apply for Leave
+                    </button>
+                </div>
+
+                <div class="leave-tabs">
+                    <button class="tab-btn active" data-tab="pending">Pending</button>
+                    <button class="tab-btn" data-tab="approved">Approved</button>
+                    <button class="tab-btn" data-tab="rejected">Rejected</button>
+                </div>
+
+                <div class="table-container">
+                    <table id="leaveTable">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Leave Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Reason</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Leave requests will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New User</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label for="newUserName">Name</label>
+                    <input type="text" id="newUserName" required>
+                </div>
+                <div class="form-group">
+                    <label for="newUserEmail">Email</label>
+                    <input type="email" id="newUserEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="newUserRole">Role</label>
+                    <select id="newUserRole" required>
+                        <option value="Employee">Employee</option>
+                        <option value="Student">Student</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary close-modal">Cancel</button>
+                    <button type="submit" class="btn-primary">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Apply Leave Modal -->
+    <div id="applyLeaveModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Apply for Leave</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="applyLeaveForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="leaveUser">User</label>
+                        <select id="leaveUser" required>
+                            <!-- Users will be populated -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaveType">Leave Type</label>
+                        <select id="leaveType" required>
+                            <option value="Sick">Sick Leave</option>
+                            <option value="Casual">Casual Leave</option>
+                            <option value="Emergency">Emergency Leave</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="leaveStartDate">Start Date</label>
+                        <input type="date" id="leaveStartDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaveEndDate">End Date</label>
+                        <input type="date" id="leaveEndDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="leaveReason">Reason</label>
+                    <textarea id="leaveReason" rows="4" required placeholder="Enter reason for leave..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary close-modal">Cancel</button>
+                    <button type="submit" class="btn-primary">Apply for Leave</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
